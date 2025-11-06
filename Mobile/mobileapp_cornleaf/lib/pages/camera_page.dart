@@ -20,7 +20,7 @@ class _CameraGalleryPageState extends State<CameraGalleryPage> {
   String _result = "";
 
   // ⚙️ Ganti IP sesuai alamat Flask server kamu
-  final String flaskUrl = "http://10.133.39.54:5000/predict"; 
+  final String flaskUrl = "http://10.17.19.54:5000/predict"; 
   // untuk emulator Android. kalau di HP fisik, pakai IP LAN laptop, contoh:
   // final String flaskUrl = "http://192.168.1.7:5000/predict";
 
