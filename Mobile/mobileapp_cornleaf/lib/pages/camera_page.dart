@@ -23,7 +23,7 @@ class _CameraPageState extends State<CameraPage> {
 
   // Ganti dengan IP lokal atau URL backend Anda
   final String _apiUrl =
-      "http://192.168.50.242:5000/predict"; // Contoh: http://192.168.1.100:5000/predict
+      "https://backend-aosy01402-kzpvdlck.leapcell.dev/predict";
 
   Future<void> _pickImage({ImageSource source = ImageSource.camera}) async {
     final XFile? image = await _picker.pickImage(source: source);
@@ -39,36 +39,38 @@ class _CameraPageState extends State<CameraPage> {
     }
   }
 
-Future<void> _predictImage() async {
-  if (_image == null) return;
+  Future<void> _predictImage() async {
+    if (_image == null) return;
 
-  setState(() => _isLoading = true);
+    setState(() => _isLoading = true);
 
-  try {
-    var request = http.MultipartRequest('POST', Uri.parse(_apiUrl));
-    request.files.add(await http.MultipartFile.fromPath('file', _image!.path));
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(_apiUrl));
+      request.files
+          .add(await http.MultipartFile.fromPath('file', _image!.path));
 
-    var response = await request.send().timeout(const Duration(seconds: 30));
-    var responseData = await response.stream.bytesToString();
-    var jsonResponse = json.decode(responseData);
+      var response = await request.send().timeout(const Duration(seconds: 30));
+      var responseData = await response.stream.bytesToString();
+      var jsonResponse = json.decode(responseData);
 
-    print("RAW JSON dari server: $responseData"); // Tambah ini buat debug
+      print("RAW JSON dari server: $responseData"); // Tambah ini buat debug
 
-    if (response.statusCode == 200) {
-      setState(() {
-        _predictedClass = jsonResponse['predicted_class'];   // FIXED
-        _confidence = (jsonResponse['confidence'] as num).toDouble();
-        _treatment = jsonResponse['treatment'];
-      });
-    } else {
-      _showError("Server error: ${jsonResponse['error'] ?? response.reasonPhrase}");
+      if (response.statusCode == 200) {
+        setState(() {
+          _predictedClass = jsonResponse['predicted_class']; // FIXED
+          _confidence = (jsonResponse['confidence'] as num).toDouble();
+          _treatment = jsonResponse['treatment'];
+        });
+      } else {
+        _showError(
+            "Server error: ${jsonResponse['error'] ?? response.reasonPhrase}");
+      }
+    } catch (e) {
+      _showError("Koneksi gagal: $e");
+    } finally {
+      setState(() => _isLoading = false);
     }
-  } catch (e) {
-    _showError("Koneksi gagal: $e");
-  } finally {
-    setState(() => _isLoading = false);
   }
-}
 
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -117,9 +119,9 @@ Future<void> _predictImage() async {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-           const SizedBox(height: 24),
+            const SizedBox(height: 24),
 
-           Text(  
+            Text(
               "Deteksi Penyakit Jagungmu Disini!",
               style: const TextStyle(
                 fontSize: 22,
@@ -130,12 +132,12 @@ Future<void> _predictImage() async {
             ),
             const SizedBox(height: 12),
 
-           Text(
+            Text(
               "Ambil gambar daun jagung menggunakan kamera ataupun Unggah Gambar untuk mendeteksi penyakitnya secara otomatis.",
               style: const TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
-            
+
             const SizedBox(height: 24),
             // Preview Gambar
             GestureDetector(
@@ -193,7 +195,7 @@ Future<void> _predictImage() async {
             ),
 
             const SizedBox(height: 20),
-             // Tombol Kamera
+            // Tombol Kamera
             CameraButton(onPressed: _pickImage),
             const SizedBox(height: 24),
             // Loading Indicator
@@ -247,16 +249,16 @@ Future<void> _predictImage() async {
                         ),
                       ),
                       const SizedBox(height: 8),
-                      Text(
-                        "Akurasi: ${(_confidence! * 100).toStringAsFixed(1)}%",
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: _confidence! >= 0.7
-                              ? Colors.green
-                              : Colors.orange,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      // Text(
+                      //   "Akurasi: ${(_confidence! * 100).toStringAsFixed(1)}%",
+                      //   style: TextStyle(
+                      //     fontSize: 16,
+                      //     color: _confidence! >= 0.7
+                      //         ? Colors.green
+                      //         : Colors.orange,
+                      //     fontWeight: FontWeight.w600,
+                      //   ),
+                      // ),
                       const SizedBox(height: 16),
                       const Text(
                         "Ketuk ikon ⚠️ untuk melihat cara penanganan",

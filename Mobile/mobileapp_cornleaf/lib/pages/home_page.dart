@@ -1,282 +1,227 @@
 import 'package:flutter/material.dart';
 import 'camera_page.dart';
-import '../widgets/disease_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  // Widget untuk membuat bullet point yang rapi
+  Widget _buildBulletPoint(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "• ",
+            style: TextStyle(fontSize: 14, color: Colors.black87),
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: const TextStyle(fontSize: 14, height: 1.5),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _diseaseCard({
+    required String title,
+    required List<String> symptoms,
+    IconData icon = Icons.eco,
+  }) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Icon(icon, color: const Color(0xFF556B2F), size: 28),
+                const SizedBox(width: 12),
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF556B2F),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ...symptoms.map((symptom) => _buildBulletPoint(symptom)).toList(),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor:
-            const Color(0xFFC6D870), // hijau muda sebagai background
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 40),
+      backgroundColor: const Color(0xFFC6D870),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 40),
 
-                  // Logo atau Gambar Jagung
-                  Container(
-                    height: 180,
-                    width: 180,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFFFFF),
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 12,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: ClipOval(
-                      child: Image.asset(
-                        'assets/images/corn_leaf.png', // Ganti dengan aset gambar jagung/daun
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return const Icon(
-                            Icons.eco,
-                            size: 80,
-                            color: Color(0xFF556B2F),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 32),
-
-                  // Judul Utama
-                  const Text(
-                    "Deteksi Penyakit Jagung",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF556B2F), // hijau tua
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  // Deskripsi
-                  Text(
-                    "Aplikasi ini membantu petani mendeteksi penyakit pada daun jagung "
-                    "seperti hawar daun, karat, dan busuk batang hanya dengan foto.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: const Color(0xFF556B2F).withOpacity(0.9),
-                      height: 1.5,
-                    ),
-                  ),
-
-                  const SizedBox(height: 24),
-
-                  // Penjelasan Penyakit
-                  Column(
-                    children: [
-                      // Card 1 - Common Rust
-                      Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Common Rust",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF556B2F),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Penyakit karat yang ditandai dengan pustul coklat kemerahan pada daun. Muncul pada kondisi lembab dengan suhu 16-25°C.",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Card 2 - Northern Leaf Blight
-                      Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Northern Leaf Blight",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF556B2F),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Hawar daun yang menyebabkan lesi berbentuk cerutu berwarna abu-abu hingga coklat. Berkembang pada kondisi lembab dan hujan.",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Card 3 - Gray Leaf Spot
-                      Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Gray Leaf Spot",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF556B2F),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Bercak daun abu-abu berbentuk persegi panjang. Sering muncul pada musim hujan dengan kelembaban tinggi.",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Card 4 - Blight
-                      Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Blight",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF556B2F),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Hawar daun yang menyebabkan lesi oval berwarna coklat dengan tepi kuning. Dapat menyebar dengan cepat dalam kondisi hangat dan lembab.",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-
-                      // Card 5 - Healthy
-                      Card(
-                        elevation: 2,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                "Healthy",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF556B2F),
-                                ),
-                              ),
-                              SizedBox(height: 8),
-                              Text(
-                                "Daun jagung sehat memiliki warna hijau merata, tidak ada bercak atau lesi, dan memiliki struktur yang normal.",
-                                style: TextStyle(fontSize: 14),
-                              ),
-                            ],
-                          ),
-                        ),
+                // Logo Jagung
+                Container(
+                  height: 180,
+                  width: 180,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.15),
+                        blurRadius: 15,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
-
-                  const SizedBox(height: 16),
-
-                  // Tombol Aksi Utama
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CameraPage(),
-                          ),
-                        );
+                  child: ClipOval(
+                    child: Image.asset(
+                      'assets/images/logo_app.jpg',
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.eco, size: 90, color: Color(0xFF556B2F));
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8FA31E), // hijau olive
-                        foregroundColor: Colors.white,
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                      ),
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.camera_alt, size: 24),
-                          SizedBox(width: 12),
-                          Text(
-                            "Mulai Analisis Daun",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Judul
+                const Text(
+                  "Deteksi Penyakit Jagung",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xFF556B2F),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Deskripsi
+                Text(
+                  "Unggah foto daun jagung Anda, kami akan deteksi penyakitnya dalam hitungan detik!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: const Color(0xFF556B2F).withOpacity(0.9),
+                    height: 1.6,
+                  ),
+                ),
+
+                const SizedBox(height: 32),
+
+                // Daftar Penyakit
+                _diseaseCard(
+                  title: "Karat Daun Jagung",
+                  icon: Icons.grass,
+                  symptoms: [
+                    "Bintik-bintik kecil berwarna coklat kekuningan atau kemerahan",
+                    "Muncul terutama pada fase generatif",
+                    "Dalam kondisi lembap menyebar sangat cepat",
+                    "Daun menjadi kering, rapuh, dan fotosintesis terganggu",
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                _diseaseCard(
+                  title: "Hawar Daun Jagung",
+                  icon: Icons.warning_amber,
+                  symptoms: [
+                    "Bercak kuning memanjang, lalu berubah coklat",
+                    "Jaringan daun mengering dan mati",
+                    "Gejala mulai dari daun bawah menuju atas",
+                    "Serangan berat dapat menyebabkan tanaman layu total",
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                _diseaseCard(
+                  title: "Bercak Daun Jagung",
+                  icon: Icons.coronavirus,
+                  symptoms: [
+                    "Bercak lonjong kuning kecoklatan dengan tepi jelas",
+                    "Bercak dapat menyatu dan daun mengering",
+                    "Sering muncul saat cuaca lembap dan berangin",
+                    "Menular melalui percikan air hujan",
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                _diseaseCard(
+                  title: "Bulai (Downy Mildew)",
+                  icon: Icons.sick,
+                  symptoms: [
+                    "Tanaman kerdil, daun pucat dan menggulung",
+                    "Tulang daun menonjol, daun kering dari ujung",
+                    "Tongkol kecil atau tidak terbentuk",
+                    "Infeksi sistemik, bisa gagal panen 100% jika dini",
+                  ],
+                ),
+                const SizedBox(height: 16),
+
+                _diseaseCard(
+                  title: "Daun Sehat",
+                  icon: Icons.sentiment_very_satisfied,
+                  symptoms: [
+                    "Warna hijau merata dan segar",
+                    "Tidak ada bercak, garis, atau perubahan warna",
+                    "Permukaan daun halus, tidak ada jamur",
+                    "Fotosintesis berjalan optimal",
+                  ],
+                ),
+
+                const SizedBox(height: 32),
+
+                // Tombol Mulai Analisis
+                SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => const CameraPage()),
+                      );
+                    },
+                    icon: const Icon(Icons.camera_alt, size: 28),
+                    label: const Text(
+                      "Mulai Analisis Daun",
+                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8FA31E),
+                      foregroundColor: Colors.white,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
                     ),
                   ),
+                ),
 
-                  const SizedBox(height: 40),
-                ],
-              ),
+                const SizedBox(height: 40),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

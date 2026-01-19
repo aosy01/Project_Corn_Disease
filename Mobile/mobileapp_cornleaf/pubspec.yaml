@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.5.1
+  sdk: ^3.4.1
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  image_picker: ^1.0.7   # versi terbaru  
+  image_picker: ^0.8.9    # versi terbaru  
   dotted_border: ^2.1.0
   http: ^1.5.0
 
@@ -61,8 +61,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/model/leaf_disease_mobilenetv3.tflite
-    - assets/model/labels.txt
+  - assets/images/logo_app.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
@@ -97,5 +96,8 @@ flutter:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/images/mobile_logo.jpg"
+  image_path: "assets/images/logo_app.jpg"
   min_sdk_android: 21 # disarankan
+
+dependency_overrides:
+  flutter_plugin_android_lifecycle: ^2.0.18   # atau coba ^2.0.24 kalau masih error (support 34 eksplisit, sebelum requirement 35)
