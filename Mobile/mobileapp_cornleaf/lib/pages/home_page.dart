@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            "• ",
+            "•",
             style: TextStyle(fontSize: 14, color: Colors.black87),
           ),
           Expanded(
